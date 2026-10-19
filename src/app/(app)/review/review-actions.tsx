@@ -21,7 +21,7 @@ export function ReviewActions({ ts, firstName }: { ts: Timesheet; firstName: str
       else {
         setMode("idle");
         // keep this sheet selected once it leaves the "submitted" state
-        router.replace(`/review?ts=${ts.id}`, { scroll: false });
+        if (!window.location.search.includes(ts.id)) router.replace(`/review?ts=${ts.id}`, { scroll: false });
       }
     });
 

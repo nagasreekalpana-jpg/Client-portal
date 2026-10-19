@@ -50,6 +50,8 @@ function useRun() {
 
 export function ProjectClient({ ts, clients, selectedId, phases, entries, canEditSetup, canEditHours }: Props) {
   const { pending, error, run } = useRun();
+  // inline field saves run separately so they never disable the action buttons
+  const fields = useRun();
   const selected = clients.find((c) => c.id === selectedId) ?? clients[0];
   const sheetLocked = !["draft", "returned"].includes(ts.status);
   const [newPhase, setNewPhase] = useState("");
@@ -57,7 +59,7 @@ export function ProjectClient({ ts, clients, selectedId, phases, entries, canEdi
 
   return (
     <div className="space-y-5">
-      {error && <div className="rounded-xl bg-danger-soft px-4 py-3 text-sm text-danger">{error}</div>}
+      {(error || fields.error) && <div className="rounded-xl bg-danger-soft px-4 py-3 text-sm text-danger">{error || fields.error}</div>}
 
       {canEditSetup && (
         <section className="card p-5">
@@ -119,17 +121,17 @@ export function ProjectClient({ ts, clients, selectedId, phases, entries, canEdi
           <div className="card p-5">
             <h2 className="mb-4 font-semibold">{canEditSetup ? "Selected client details" : "Client"}</h2>
             <div className="grid gap-4 sm:grid-cols-2" key={selected.id}>
-              <Field client={selected} field="company_name" label="Client company name" full editable={canEditSetup} run={run} />
-              <Field client={selected} field="contact_name" label="Contact name" editable={canEditSetup} run={run} />
-              <Field client={selected} field="contact_title" label="Contact title" editable={canEditSetup} run={run} />
-              <Field client={selected} field="contact_email" label="Contact email (timesheet is sent here)" type="email" full editable={canEditSetup} run={run} />
+              <Field client={selected} field="company_name" label="Client company name" full editable={canEditSetup} run={fields.run} />
+              <Field client={selected} field="contact_name" label="Contact name" editable={canEditSetup} run={fields.run} />
+              <Field client={selected} field="contact_title" label="Contact title" editable={canEditSetup} run={fields.run} />
+              <Field client={selected} field="contact_email" label="Contact email (timesheet is sent here)" type="email" full editable={canEditSetup} run={fields.run} />
             </div>
           </div>
           <div className="card h-fit p-5">
             <h2 className="mb-4 font-semibold">Project</h2>
             <div className="grid gap-4" key={selected.id}>
-              <Field client={selected} field="project_name" label="Project name" editable={canEditSetup} run={run} />
-              <Field client={selected} field="project_code" label="Project code" mono editable={canEditSetup} run={run} />
+              <Field client={selected} field="project_name" label="Project name" editable={canEditSetup} run={fields.run} />
+              <Field client={selected} field="project_code" label="Project code" mono editable={canEditSetup} run={fields.run} />
             </div>
           </div>
         </section>
@@ -153,7 +155,7 @@ export function ProjectClient({ ts, clients, selectedId, phases, entries, canEdi
                   className="input min-w-48 flex-1"
                   defaultValue={p.name}
                   disabled={!canEditSetup}
-                  onBlur={(e) => e.target.value.trim() !== p.name && run(() => renamePhase(p.id, e.target.value))}
+                  onBlur={(e) => e.target.value.trim() !== p.name && fields.run(() => renamePhase(p.id, e.target.value))}
                 />
                 <span className="w-20 text-right text-sm font-semibold">{fmtH(hours)} h</span>
                 <button className="btn-ghost btn-sm" onClick={() => setEditing(p)}>

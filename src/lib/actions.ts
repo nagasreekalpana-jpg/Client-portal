@@ -44,9 +44,10 @@ export async function signIn(_: Result | undefined, form: FormData): Promise<Res
   const password = String(form.get("password") ?? "");
   if (!email || !password) return { error: "Enter your email and password." };
   const supabase = await authClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) return { error: "Email or password is incorrect." };
-  redirect("/");
+  const { data: profile } = await db().from("profiles").select("role").eq("id", data.user.id).maybeSingle();
+  redirect(profile?.role === "manager" ? "/review" : "/dashboard");
 }
 
 export async function signUp(_: Result | undefined, form: FormData): Promise<Result> {
@@ -80,7 +81,7 @@ export async function signUp(_: Result | undefined, form: FormData): Promise<Res
 
   const supabase = await authClient();
   await supabase.auth.signInWithPassword({ email, password });
-  redirect("/");
+  redirect(role === "manager" ? "/review" : "/dashboard");
 }
 
 export async function signOut() {

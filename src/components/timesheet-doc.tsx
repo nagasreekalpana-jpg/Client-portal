@@ -10,7 +10,7 @@ export function TimesheetDoc({ bundle }: { bundle: Bundle }) {
   const shortPhase = (name: string) => name.split(/\s[–-]\s/)[0] || name;
 
   return (
-    <article className="mx-auto max-w-5xl rounded-2xl border border-line bg-surface p-6 sm:p-10">
+    <article className="rounded-2xl border border-line bg-surface p-6 sm:p-10">
       <header className="flex flex-wrap items-start justify-between gap-4 border-b-2 border-ink pb-6">
         <div className="flex items-center gap-3">
           <span className="inline-flex size-11 items-center justify-center rounded-lg bg-navy text-lg font-bold text-white">

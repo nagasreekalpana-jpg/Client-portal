@@ -111,7 +111,9 @@ export function AuditTrail({ events, limit }: { events: AuditEvent[]; limit?: nu
     <div className="card p-5">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="font-semibold">Audit trail</h2>
-        <span className="text-xs text-muted">{events.length} events</span>
+        <span className="text-xs text-muted">
+          {events.length} event{events.length === 1 ? "" : "s"}
+        </span>
       </div>
       {list.length === 0 && <p className="text-sm text-muted">No activity yet.</p>}
       <ol className="relative space-y-4 border-l border-line pl-5">

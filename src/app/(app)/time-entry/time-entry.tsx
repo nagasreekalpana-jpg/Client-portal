@@ -8,6 +8,7 @@ import {
   CATEGORIES,
   EDITABLE,
   MAX_DAY_HOURS,
+  addDays,
   categoryColor,
   dayName,
   dayTotals,
@@ -38,8 +39,10 @@ type Draft = { entry_date: string; category: string; phase_id: string | null; de
 
 function defaultDate(ts: Timesheet) {
   const t = todayISO();
-  if (t >= ts.period_start && t <= ts.period_end && isWeekday(t)) return t;
-  return t > ts.period_end ? ts.period_end : ts.period_start;
+  // today if it's a weekday in the period, else the nearest earlier weekday in it
+  let d = t > ts.period_end ? ts.period_end : t < ts.period_start ? ts.period_start : t;
+  while (!isWeekday(d) && d > ts.period_start) d = addDays(d, -1);
+  return d;
 }
 
 export function TimeEntry({ ts, entries, phases, weeks, total, checks, canSubmit, managerName }: Props) {

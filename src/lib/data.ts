@@ -16,11 +16,11 @@ import {
 
 export const getMe = cache(async (): Promise<Profile> => {
   const supabase = await authClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-  const { data } = await db().from("profiles").select("*").eq("id", user.id).maybeSingle();
+  // verifies the session JWT locally when the project uses asymmetric signing keys
+  const { data: claims } = await supabase.auth.getClaims();
+  const userId = claims?.claims.sub;
+  if (!userId) redirect("/login");
+  const { data } = await db().from("profiles").select("*").eq("id", userId).maybeSingle();
   if (!data) {
     // auth user without a profile (e.g. created outside the app)
     await supabase.auth.signOut();
