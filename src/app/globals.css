@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f3f5f8;
+  --surface: #ffffff;
+  --surface-2: #f6f8fb;
+  --border: #e3e7ee;
+  --text: #0f172a;
+  --muted: #64748b;
+  --primary: #2b59d9;
+  --primary-soft: #e8eefc;
+  --success: #1f7a4d;
+  --success-soft: #e6f4ec;
+  --warn: #9a5b00;
+  --warn-soft: #fdf1dc;
+  --danger: #c0392b;
+  --danger-soft: #fcebea;
+  --navy: #0f1a2e;
+  --over: #9a5b00;
+}
+
+.dark {
+  --bg: #0b1220;
+  --surface: #121b2d;
+  --surface-2: #17223a;
+  --border: #24314b;
+  --text: #e6ebf5;
+  --muted: #93a1ba;
+  --primary: #5b82f0;
+  --primary-soft: #1c2b4d;
+  --success: #45b480;
+  --success-soft: #13301f;
+  --warn: #e3a645;
+  --warn-soft: #33270f;
+  --danger: #ef6b5d;
+  --danger-soft: #3a1714;
+  --navy: #070d18;
+  --over: #c58a2a;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--border);
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-navy: var(--navy);
+  --color-over: var(--over);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  font-family: var(--font-plex-sans), system-ui, sans-serif;
+}
+
+@utility input {
+  @apply w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:cursor-not-allowed disabled:bg-surface-2 disabled:text-muted;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-primary text-white hover:brightness-110;
+}
+@utility btn-success {
+  @apply btn bg-success text-white hover:brightness-110;
+}
+@utility btn-danger {
+  @apply btn bg-danger text-white hover:brightness-110;
+}
+@utility btn-ghost {
+  @apply btn border border-line bg-surface text-ink hover:bg-surface-2;
+}
+@utility btn-sm {
+  @apply px-3 py-1.5 text-xs;
+}
+
+@utility card {
+  @apply rounded-xl border border-line bg-surface;
+}
+
+@utility label {
+  @apply mb-1 block text-xs font-medium text-muted;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
